@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lix DB</title>
+    </head>
+
+    <body>
+        <h1>{{ root_name }}</h1>
+        {% if directory %}
+            <table border=1>
+                <tr>
+                    <td>Name</td>
+                    <td>Saved/Required</td>
+                    <td>Skills</td>
+                    <td>Time</td>
+                </tr>
+                <tr><td><a href="..">Up one level</a></td></tr>
+                {% for dir in directories %}
+                <tr>
+                    <td><a href="/lixdb/{{ dir.name }}/">{{ dir.name }}</a></td>
+                </tr>
+                {% endfor %}
+                {% for lev in level_stats %}
+                <tr>
+                    <td>{{ lev.0.name }}</td>
+                    {% if lev.1 %}
+                    <td>{{ lev.1.0 }}/{{ lev.1.1 }}</td>
+                    <td>{{ lev.1.2 }}</td>
+                    <td>{{ lev.1.3 }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            The specified directory {{ root_name }} does not exist!
+        {% endif %}
+        <a href="/lixdb/">Home</a>
+    </body>
+</html>
