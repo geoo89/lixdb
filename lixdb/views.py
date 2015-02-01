@@ -68,7 +68,6 @@ def level_list(request, root_name_url):
 
         # Adds our results list to the template context under name pages.
         context_dict['level_stats'] = level_stats
-        context_dict['wurst'] = [1,2,3,4,5]
         # We also add the category object from the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
         context_dict['directories'] = directories
@@ -79,3 +78,19 @@ def level_list(request, root_name_url):
 
     # Go render the response and return it to the client.
     return render_to_response('lixdb/levels.html', context_dict, context)
+
+def replay_list(request, root_name_url):
+    context = RequestContext(request)
+
+    level = Level.objects.get(name=root_name_url)
+    replays = Replay.objects.filter(level_path = root_name_url)
+    replays_by_saved = replays.order_by('-lems_saved', 'skills')
+    replays_by_skills = replays.order_by('skills', '-lems_saved')
+    replays_by_time = replays.order_by('time')
+
+    context_dict = {'level_name': root_name_url, 'dir_name': level.parent.name}
+    context_dict['replays_by_saved'] = replays_by_saved
+    context_dict['replays_by_skills'] = replays_by_skills
+    context_dict['replays_by_time'] = replays_by_time
+
+    return render_to_response('lixdb/replays.html', context_dict, context)

@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^about/$', views.about, name='about'),
     url(r'^(?P<root_name_url>levels(/[0-9A-z]+)*)[/]*$', views.level_list, name='level_list'), #TODO: add - and _
+    url(r'^(?P<root_name_url>levels(/[0-9A-z]+)*/.*\.txt)$', views.replay_list, name='replay_list'), #TODO: add - and _
 )

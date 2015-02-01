@@ -22,7 +22,7 @@
                 {% endfor %}
                 {% for lev in level_stats %}
                 <tr>
-                    <td>{{ lev.0.name }}</td>
+                    <td><a href="/lixdb/{{ lev.0.name }}">{{ lev.0.name }}</a></td>
                     {% if lev.1 %}
                     <td>{{ lev.1.0 }}/{{ lev.1.1 }}</td>
                     <td>{{ lev.1.2 }}</td>
