@@ -10,6 +10,8 @@ class Directory(models.Model):
     def __unicode__(self): # add recursion here to get full path
         return self.name
 
+    # associate a _order.X.txt with a directory
+
 class Level(models.Model): # inherit from Directory?
     name = models.CharField(max_length=128)
     parent = models.ForeignKey(Directory)

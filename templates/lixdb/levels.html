@@ -3,17 +3,17 @@
 {% block title %} - Browse Levels{% endblock %}
 
 {% block body_block %}
+    <h1>{{ root_name }}</h1> <!-- don't know why it doesn't display -->
 
-    <h1>{{ root_name }}</h1>
     {% if directory %}
         <table border=1>
-            <tr>
+            <tr bgcolor="#FFCCCC">
                 <td>Name</td>
                 <td>Saved/Required</td>
                 <td>Skills</td>
                 <td>Time</td>
             </tr>
-            <tr><td><a href="..">Up one level</a></td></tr>
+            <tr bgcolor="#AAFFBB"><td><a href="/lixdb/{{ parent_dir }}">Up one level</a></td></tr>
             {% for dir in directories %}
             <tr>
                 <td><a href="/lixdb/{{ dir.name }}/">{{ dir.name }}</a></td>

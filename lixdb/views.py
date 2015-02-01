@@ -6,6 +6,8 @@ from django.shortcuts import render_to_response
 
 from lixdb.models import Directory, Level, Replay
 
+import os
+
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -41,7 +43,7 @@ def level_list(request, root_name_url):
 
     # Create a context dictionary which we can pass to the template rendering engine.
     # We start by containing the name of the category passed by the user.
-    context_dict = {'root_name': root_name_url}
+    context_dict = {'root_name': root_name_url, 'parent_dir': os.path.join(root_name_url, '..')}
 
     try:
         # Can we find a category with the given name?
