@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+
+    <head>
+        <title>Lix DB {% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <a href="/lixdb">Home</a>
+        <a href="/lixdb/levels">Browse levels</a>
+        <a href="/lixdb/about/">Useless About Page</a><hr />
+
+        {% block body_block %}{% endblock %}
+    </body>
+
+</html>

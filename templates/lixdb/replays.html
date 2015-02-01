@@ -1,67 +1,65 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Lix DB</title>
-    </head>
+{% extends 'lixdb/base.html' %}
 
-    <body>
-        <a href="/lixdb/{{ dir_name }}">Back</a>
-        <h1>{{ level_name }}</h1>
-        {% if replays_by_saved %}
-            Sorted by lemmings saved:
-            <table border=1>
-                <tr>
-                    <td>Player</td>
-                    <td>Saved/Required</td>
-                    <td>Skills</td>
-                    <td>Time</td>
-                </tr>
-                {% for rpl in replays_by_saved %}
-                <tr>
-                    <td>{{ rpl.author }}</td>
-                    <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
-                    <td>{{ rpl.skills }}</td>
-                    <td>{{ rpl.time }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            Sorted by skills used:
-            <table border=1>
-                <tr>
-                    <td>Player</td>
-                    <td>Saved/Required</td>
-                    <td>Skills</td>
-                    <td>Time</td>
-                </tr>
-                {% for rpl in replays_by_skills %}
-                <tr>
-                    <td>{{ rpl.author }}</td>
-                    <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
-                    <td>{{ rpl.skills }}</td>
-                    <td>{{ rpl.time }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            Sorted by time taken:
-            <table border=1>
-                <tr>
-                    <td>Player</td>
-                    <td>Saved/Required</td>
-                    <td>Skills</td>
-                    <td>Time</td>
-                </tr>
-                {% for rpl in replays_by_time %}
-                <tr>
-                    <td>{{ rpl.author }}</td>
-                    <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
-                    <td>{{ rpl.skills }}</td>
-                    <td>{{ rpl.time }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            The specified level {{ root_name }} does not exist!
-        {% endif %}
-        <a href="/lixdb/">Home</a>
-    </body>
-</html>
+
+{% block title %} - Replays for {{ level_name }}{% endblock %}
+
+{% block body_block %}
+    <h1>{{ level_name }}</h1>
+    <a href="/lixdb/{{ dir_name }}">Back</a>
+    {% if replays_by_saved %}
+        Sorted by lemmings saved:
+        <table border=1>
+            <tr>
+                <td>Player</td>
+                <td>Saved/Required</td>
+                <td>Skills</td>
+                <td>Time</td>
+            </tr>
+            {% for rpl in replays_by_saved %}
+            <tr>
+                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
+                <td>{{ rpl.skills }}</td>
+                <td>{{ rpl.time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        Sorted by skills used:
+        <table border=1>
+            <tr>
+                <td>Player</td>
+                <td>Skills</td>
+                <td>Saved/Required</td>
+                <td>Time</td>
+            </tr>
+            {% for rpl in replays_by_skills %}
+            <tr>
+                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.skills }}</td>
+                <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
+                <td>{{ rpl.time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        Sorted by time taken:
+        <table border=1>
+            <tr>
+                <td>Player</td>
+                <td>Time</td>
+                <td>Saved/Required</td>
+                <td>Skills</td>
+            </tr>
+            {% for rpl in replays_by_time %}
+            <tr>
+                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.time }}</td>
+                <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
+                <td>{{ rpl.skills }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        The specified level {{ root_name }} does not exist!
+    {% endif %}
+
+{% endblock %}

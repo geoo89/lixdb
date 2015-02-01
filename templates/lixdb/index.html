@@ -1,35 +1,25 @@
-<!DOCTYPE html>
+{% extends 'lixdb/base.html' %}
 
-{% load static %}
 
-<html>
+{% block body_block %}
 
-    <head>
-        <title>Lix DB</title>
-    </head>
+    This really shouldn't be here, but whatever.
 
-    <body>
-        <a href="/lixdb/levels">Browse levels</a> <br />
+    {% if directories or levels %}
+        <ul>
+            {% if directories %}
+            {% for dir in directories %}
+            <li>{{ dir.name }}</li>
+            {% endfor %}
+            {% endif %}
+            {% if levels %}
+            {% for lev in levels %}
+            <li>{{ lev.name }}</li>
+            {% endfor %}
+            {% endif %}
+        </ul>
+    {% else %}
+        <strong>Nothing to see here.</strong>
+    {% endif %}
 
-        {% if directories or levels %}
-            <ul>
-                {% if directories %}
-                {% for dir in directories %}
-                <li>{{ dir.name }}</li>
-                {% endfor %}
-                {% endif %}
-                {% if levels %}
-                {% for lev in levels %}
-                <li>{{ lev.name }}</li>
-                {% endfor %}
-                {% endif %}
-            </ul>
-        {% else %}
-            <strong>Nothign to see here.</strong>
-        {% endif %}
-        
-        <a href="/lixdb/about/">Useless About Page</a><br />
-        <!--<img src="{% static "paperstrip.png" %}" alt="Two paper strips" />-->
-    </body>
-
-</html>
+{% endblock %}

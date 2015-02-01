@@ -25,7 +25,10 @@ def index(request):
 
 
 def about(request):
-    return HttpResponse("This is the about page! <a href=\"../\">Back</a> <a href=\"/lixdb/\">Home</a>")
+    context = RequestContext(request)
+    context_dict = dict()
+
+    return render_to_response('lixdb/about.html', context_dict, context)
 
 def level_list(request, root_name_url):
     # Request our context from the request passed to us.
