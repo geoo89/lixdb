@@ -1,0 +1,18 @@
+# Lix DB .gitignore for everybody
+# If you wish to exclude files that only you have, use .git/info/exclude
+# instead of this file, which will affect all users and is versioned.
+
+# stuff created by the population script
+lix.db
+replay_list.csv
+initial_data.json
+
+# the replay checker and all related files
+media/bin
+media/lix
+media/data
+media/images
+
+# any levels and replays that are part of the db
+media/replays/*
+media/levels/*
