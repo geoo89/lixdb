@@ -3,15 +3,42 @@ import fnmatch
 import csv
 
 def populate():
-    lev_root = Directory.objects.get_or_create(name='levels')[0]
+    lev_root = Directory.objects.get_or_create(name='levels', oid = 0)[0]
 
     os.chdir("media")
     for root, dirnames, filenames in os.walk('levels'):
-        par = Directory.objects.get_or_create(name=root)[0]
+        order_dict = dict()
+        oid = 0 # order id
+        if '_order.X.txt' in filenames:
+            order = open(os.path.join(root, '_order.X.txt'))
+            for line in order:
+                order_dict[line.strip()] = oid
+                oid += 1
+            order.close()
+        par = Directory.objects.get(name=root) # TODO: add check for error (if [1] == FALSE)
         for dirname in dirnames:
-            Directory.objects.get_or_create(name = os.path.join(root, dirname), parent = par)
+            d_oid = oid
+            if dirname in order_dict:
+                d_oid = order_dict[dirname]
+            else:
+                oid += 1
+            Directory.objects.get_or_create(name = os.path.join(root, dirname), parent = par, oid = d_oid)
         for filename in fnmatch.filter(filenames, '*.txt'):
-            Level.objects.get_or_create(name = os.path.join(root, filename), parent = par)
+            if filename == '_order.X.txt':
+                continue
+            f_oid = oid
+            if filename in order_dict:
+                f_oid = order_dict[filename]
+            else:
+                oid += 1
+            title = str()
+            lv = open(os.path.join(root, filename))
+            for line in lv:
+                if line[:8] == '$ENGLISH':
+                    title = line[8:].strip()
+                    break
+            lv.close()
+            Level.objects.get_or_create(name = os.path.join(root, filename), parent = par, title = title, oid = f_oid)
     os.chdir("..")
 
     #try:

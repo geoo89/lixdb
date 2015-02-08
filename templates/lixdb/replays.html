@@ -5,15 +5,15 @@
 
 {% block body_block %}
     <h1>{{ level_name }}</h1>
-    <a href="/lixdb/{{ dir_name }}">Back</a>
+    <a href="/lixdb/{{ dir_name }}">Back</a><br />
     {% if replays_by_saved %}
-        Sorted by lemmings saved:
+        <br />Sorted by lemmings saved:
         <table border=1>
             <tr>
-                <td>Player</td>
-                <td>Saved/Required</td>
-                <td>Skills</td>
-                <td>Time</td>
+                <th>Player</th>
+                <th>Saved</th>
+                <th>Skills</th>
+                <th>Time</th>
             </tr>
             {% for rpl in replays_by_saved %}
             <tr>
@@ -24,13 +24,13 @@
             </tr>
             {% endfor %}
         </table>
-        Sorted by skills used:
+        <br />Sorted by skills used:
         <table border=1>
             <tr>
-                <td>Player</td>
-                <td>Skills</td>
-                <td>Saved/Required</td>
-                <td>Time</td>
+                <th>Player</th>
+                <th>Skills</th>
+                <th>Saved</th>
+                <th>Time</th>
             </tr>
             {% for rpl in replays_by_skills %}
             <tr>
@@ -41,13 +41,13 @@
             </tr>
             {% endfor %}
         </table>
-        Sorted by time taken:
+        <br />Sorted by time taken:
         <table border=1>
             <tr>
-                <td>Player</td>
-                <td>Time</td>
-                <td>Saved/Required</td>
-                <td>Skills</td>
+                <th>Player</th>
+                <th>Time</th>
+                <th>Saved</th>
+                <th>Skills</th>
             </tr>
             {% for rpl in replays_by_time %}
             <tr>

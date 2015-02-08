@@ -54,8 +54,8 @@ def level_list(request, root_name_url):
 
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
-        levels = Level.objects.filter(parent = directory)
-        directories = Directory.objects.filter(parent = directory)
+        levels = Level.objects.filter(parent = directory).order_by('oid')
+        directories = Directory.objects.filter(parent = directory).order_by('oid')
 
         level_stats = []
         for level in levels:

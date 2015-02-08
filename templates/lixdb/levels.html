@@ -7,21 +7,21 @@
 
     {% if directory %}
         <table border=1>
-            <tr bgcolor="#FFCCCC">
-                <td>Name</td>
-                <td>Saved/Required</td>
-                <td>Skills</td>
-                <td>Time</td>
-            </tr>
-            <tr bgcolor="#AAFFBB"><td><a href="/lixdb/{{ parent_dir }}">Up one level</a></td></tr>
-            {% for dir in directories %}
             <tr>
+                <th>Name</th>
+                <th>Saved</th>
+                <th>Skills</th>
+                <th>Time</th>
+            </tr>
+            <tr class="dir"><td><a href="/lixdb/{{ parent_dir }}">Up one level</a></td></tr>
+            {% for dir in directories %}
+            <tr class="dir">
                 <td><a href="/lixdb/{{ dir.name }}/">{{ dir.name }}</a></td>
             </tr>
             {% endfor %}
             {% for lev in level_stats %}
-            <tr>
-                <td><a href="/lixdb/{{ lev.0.name }}">{{ lev.0.name }}</a></td>
+            <tr class="lev">
+                <td><a href="/lixdb/{{ lev.0.name }}">{{ lev.0.title }}</a></td>
                 {% if lev.1 %}
                 <td>{{ lev.1.0 }}/{{ lev.1.1 }}</td>
                 <td>{{ lev.1.2 }}</td>
