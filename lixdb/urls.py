@@ -11,4 +11,7 @@ urlpatterns = patterns('',
     url(r'^about/$', views.about, name='about'),
     url(r'^(?P<root_name_url>levels(/[0-9A-z]+)*)[/]*$', views.level_list, name='level_list'), #TODO: add - and _
     url(r'^(?P<root_name_url>levels(/[0-9A-z]+)*/.*\.txt)$', views.replay_list, name='replay_list'), #TODO: add - and _
+    url(r'^register/$', views.register, name='register'),
+    url(r'^login/$', views.user_login, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
 )

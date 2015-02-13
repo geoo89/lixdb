@@ -16,3 +16,6 @@ media/images
 # any levels and replays that are part of the db
 media/replays/*
 media/levels/*
+
+# pre-compiled stuff
+*.pyc

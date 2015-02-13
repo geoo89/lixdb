@@ -1,6 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# official flag default = true
 
 class Directory(models.Model):
     name = models.CharField(max_length=128) # this is the full path
@@ -14,6 +14,8 @@ class Directory(models.Model):
 
     # associate a _order.X.txt with a directory
 
+
+# official flag default = true
 class Level(models.Model): # inherit from Directory?
     name = models.CharField(max_length=128) # this is the full path
     parent = models.ForeignKey(Directory)
@@ -25,6 +27,7 @@ class Level(models.Model): # inherit from Directory?
 
     def __unicode__(self):
         return self.name
+
 
 class Replay(models.Model):
     name = models.CharField(max_length=128)
@@ -40,3 +43,15 @@ class Replay(models.Model):
     def __unicode__(self):
         return self.name + " by " + self.author + " " + self.status + " " + self.level_path
 
+
+class UserProfile(models.Model):
+    # This line is required. Links UserProfile to a User model instance.
+    user = models.OneToOneField(User)
+
+    # The additional attributes we wish to include.
+    #signature = models.CharField(max_length=256)
+    #picture = models.ImageField(upload_to='profile_images', blank=True)
+
+    # Override the __unicode__() method to return out something meaningful!
+    def __unicode__(self):
+        return self.user.username

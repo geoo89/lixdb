@@ -13,7 +13,15 @@
     <ul class="header-list">
         <li><a href="/lixdb">Home</a></li>
         <li><a href="/lixdb/levels">Browse levels</a></li>
-        <li><a href="/lixdb/about/">Useless About Page</a></li>
+        <li><a href="/lixdb/about/">About</a></li>
+        {% if user.is_authenticated %}
+        <li>Logged in as {{ user.username }}!</li>
+        <li><a href="/lixdb/logout/">Logout</a></li>
+        {% else %}
+        <li><a href="/lixdb/login/">Login</a></li>
+        <li><a href="/lixdb/register/">Register</a></li>
+        {% endif %}
+        
     </ul>
         <hr />
 
