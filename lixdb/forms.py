@@ -10,12 +10,17 @@ from django.contrib.auth.models import User
 #         model = Category
 #         fields = ('name')
 
+class UploadFileForm(forms.Form):
+    #title = forms.CharField(max_length=50)
+    upfile = forms.FileField(label = 'Select a file')
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
+
 
 class UserProfileForm(forms.ModelForm):
     # An inline class to provide additional information on the form.
@@ -27,3 +32,6 @@ class UserProfileForm(forms.ModelForm):
         # Some fields may allow NULL values, so we may not want to include them...
         # Here, we are hiding the foreign key.
         fields = ()
+
+# class FileForm(forms.Form):
+#     

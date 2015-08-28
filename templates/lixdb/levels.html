@@ -23,9 +23,9 @@
             <tr class="lev">
                 <td><a href="/lixdb/{{ lev.0.name }}">{{ lev.0.title }}</a></td>
                 {% if lev.1 %}
-                <td>{{ lev.1.0 }}/{{ lev.1.1 }}</td>
-                <td>{{ lev.1.2 }}</td>
-                <td>{{ lev.1.3 }}</td>
+                <td id="{{ lev.1.4.0 }}">{{ lev.1.0 }}/{{ lev.1.1 }}</td>
+                <td id="{{ lev.1.4.1 }}">{{ lev.1.2 }}</td>
+                <td id="{{ lev.1.4.2 }}">{{ lev.1.3 }}</td>
                 {% endif %}
             </tr>
             {% endfor %}

@@ -16,6 +16,8 @@
         <li><a href="/lixdb/about/">About</a></li>
         {% if user.is_authenticated %}
         <li>Logged in as {{ user.username }}!</li>
+        <li><a href="/lixdb/my_replays/">My Replays</a></li>
+        <li><a href="/lixdb/upload_replays/">Upload Replays</a></li>
         <li><a href="/lixdb/logout/">Logout</a></li>
         {% else %}
         <li><a href="/lixdb/login/">Login</a></li>

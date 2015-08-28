@@ -1,0 +1,46 @@
+{% extends 'lixdb/base.html' %}
+
+{% block title %} - Upload replays{% endblock %}
+
+{% block body_block %}
+    <h1>Upload your own replays.</h1>
+
+    <strong>Upload an archive (tar.gz or whatever) containing replays!</strong><br />
+
+   {% if upfiles %}
+        <ul>
+        {% for file in upfiles %}
+            <li><a href="{{ file.upfile.url }}">{{ file.upfile.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No uploaded files.</p>
+    {% endif %}
+
+    
+    <!-- action="/lixdb/upload_replays/" -->
+    <form id="file_form" method="post" action="{% url 'upload_replays' %}" 
+            enctype="multipart/form-data">
+        <!-- default: application/x-www-form-urlencoded 
+             multipart/form-data required for file transfer -->
+
+        {% csrf_token %} <!-- against Cross-site request forgery -->
+
+        <!-- Display each form. The as_p method wraps each element in a paragraph
+             (<p>) element. This ensures each element appears on a new line,
+             making everything look neater. -->
+        <!-- {{ file_form.as_p }} -->
+        <p>{{ file_form.non_field_errors }}</p>
+        <p>{{ file_form.upfile.label_tag }} {{ file_form.upfile.help_text }}</p>
+        <p>
+            {{ file_form.upfile.errors }}
+            {{ file_form.upfile }}
+        </p>
+
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="Upload" />
+    </form>
+
+    <strong>Note: It might take a few minutes for your replays to appear in My Replays.</strong><br />
+
+{% endblock %}

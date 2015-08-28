@@ -34,7 +34,10 @@ class Replay(models.Model):
     status = models.CharField(max_length=32)
     level_path = models.CharField(max_length=256)
     level = models.ForeignKey(Level, null = True)
-    author = models.CharField(max_length=128) # in the future this should be come a user id
+    author = models.CharField(max_length=128)
+    owner = models.ForeignKey(User, null=True)
+    timestamp = models.DateTimeField()
+    # some stats
     lems_saved = models.IntegerField(default=0)
     lems_required = models.IntegerField(default=0)
     skills = models.IntegerField(default=0)
@@ -55,3 +58,7 @@ class UserProfile(models.Model):
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
         return self.user.username
+
+
+class UpFile(models.Model):
+    upfile = models.FileField(upload_to='documents/%Y/%m/%d')

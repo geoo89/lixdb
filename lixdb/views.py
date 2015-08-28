@@ -5,10 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-from lixdb.models import Directory, Level, Replay
-from lixdb.forms import UserForm, UserProfileForm
+from lixdb.models import Directory, Level, Replay, UpFile
+from lixdb.forms import UserForm, UserProfileForm, UploadFileForm
+from lixdb.generate import *
+
+# Imaginary function to handle an uploaded file.
+# from somewhere import handle_uploaded_file
 
 import os
+import datetime
 
 
 def index(request):
@@ -37,6 +42,15 @@ def about(request):
 
 
 def level_list(request, root_name_url):
+    RANK_GOLD = 5
+    RANK_SILVER = 4
+    RANK_BRONZE = 3
+    RANK_FAIL = 2
+    RANK_NOLEV = 1
+    RANK_NOSOL = 0
+
+    to_words = {RANK_GOLD : 'gold', RANK_SILVER : 'silver', RANK_BRONZE : 'bronze', RANK_FAIL : 'fail', RANK_NOLEV : 'nolev', RANK_NOSOL : 'nosol'}
+
     # Request our context from the request passed to us.
     context = RequestContext(request)
 
@@ -63,13 +77,65 @@ def level_list(request, root_name_url):
 
         level_stats = []
         for level in levels:
-            stats = [0, 0, 999999, 999999] # turn this into a class?
+            stats = [(0, 0), 0, (999999, 999999), 999999] # turn this into a class? [(saved, -skills), required, (skills, -saved), time]
             success = False
             rpls = Replay.objects.filter(level_path = level.name)
             for r in rpls:
-                stats = [max(stats[0], r.lems_saved), r.lems_required, min(stats[2], r.skills), min(stats[3], r.time)]
-                if r.status == '(OK)':
+                if r.status == 'OK':
                     success = True
+                    stats = [
+                                  max(stats[0], (r.lems_saved, -r.skills)),
+                                  r.lems_required,
+                                  min(stats[2], (r.skills, -r.lems_saved)),
+                                  min(stats[3], r.time)
+                            ]
+            # if owner is logged in, colour depending on status of owner's best replay
+            # stats now contains best time, best lems saved, 
+            if request.user.is_authenticated():
+                status = [RANK_NOSOL, RANK_NOSOL, RANK_NOSOL]
+                for r in rpls.filter(owner = request.user):
+                    if r.status == 'NO-LEV':
+                        status[0] == max(status[0], RANK_NOLEV)
+                        status[1] == max(status[1], RANK_NOLEV)
+                        status[2] == max(status[2], RANK_NOLEV)
+                    elif r.status == 'FAIL': #r.lems_saved < r.lems_required:
+                        status[0] == max(status[0], RANK_FAIL)
+                        status[1] == max(status[1], RANK_FAIL)
+                        status[2] == max(status[2], RANK_FAIL)
+                    else:
+                        # === for lems saved ===
+                        if (r.lems_saved, -r.skills) == stats[0]:
+                            # same amount of skills and saved -- gold
+                            status[0] = max(status[0], RANK_GOLD)
+                        elif r.lems_saved == stats[0][0]:
+                            # same amount of saved but not skills -- silver
+                            status[0] = max(status[0], RANK_SILVER)
+                        else:
+                            # merely solved
+                            status[0] = max(status[0], RANK_BRONZE)
+
+                        # === for skills used ===
+                        if (r.skills, -r.lems_saved) == stats[2]:
+                            # same amount of skills and saved -- gold
+                            status[1] = max(status[1], RANK_GOLD)
+                        elif r.skills == stats[2][0]:
+                            # same amount of skills but not saved -- silver
+                            status[1] = max(status[1], RANK_SILVER)
+                        else:
+                            # merely solved
+                            status[1] = max(status[1], RANK_BRONZE)
+
+                        # === for time taken ===
+                        if r.time <= stats[3] + 5*15:
+                            # within 5 seconds of best solution
+                            status[2] = max(status[2], RANK_GOLD)
+                        if r.time <= stats[3] + 15*15:
+                            # within 15 seconds of best solution
+                            status[2] = max(status[2], RANK_SILVER)
+                        else:
+                            # merely solved
+                            status[2] = max(status[2], RANK_BRONZE)
+                stats.append([to_words[i] for i in status])
             if success:
                 level_stats.append([level, stats])
             else:
@@ -104,6 +170,54 @@ def replay_list(request, root_name_url):
     context_dict['replays_by_time'] = replays_by_time
 
     return render_to_response('lixdb/replays.html', context_dict, context)
+
+
+@login_required
+def my_replays(request):
+    context = RequestContext(request)
+    user = request.user
+
+    replays = Replay.objects.filter(owner = user).order_by('-timestamp')
+
+    context_dict = dict()
+    context_dict['replays'] = replays
+
+    return render_to_response('lixdb/my_replays.html', context_dict, context)
+
+
+#@login_required
+def upload_replays(request):
+    #context = RequestContext(request)
+    if request.method == 'POST':
+        #context.update(csrf(request))
+        file_form = UploadFileForm(request.POST, request.FILES)
+        if file_form.is_valid():
+            #handle_uploaded_file(request.FILES['upfile'])
+            file = UpFile(upfile = request.FILES['upfile'])
+            #time = datetime.datetime.utcnow().strftime("%y%m%d_%H%M%S")
+            #file.name = 'lixdb/media/replays/' + time + '/' + request.FILES['file'].name
+            file.save()
+            #unpack_replays(request.FILES['file'], q.strftime("%y%m%d_%H%M%S") + '/' + request.FILES['file'].name)
+            #generate_csv(request.FILES['file'])
+            #generate_stats()
+            #return HttpResponseRedirect('/lixdb/my_replays/')
+            return HttpResponseRedirect('/lixdb/upload_replays/')
+            #return HttpResponseRedirect(reverse('lixdb.views.upload_replays'))
+    else:
+        file_form = UploadFileForm()
+    
+    upfiles = UpFile.objects.all() #<-- so we can list them
+
+    return render_to_response('lixdb/upload_replays.html', {'upfiles' : upfiles, 'file_form': file_form}, context_instance=RequestContext(request))
+    #return render_to_response('lixdb/upload_replays.html', {'form': file_form}, context)
+
+
+# def handle_uploaded_file(f):
+#     # switch over extention/ MIME type
+#     path = '/'.join([settings.MEDIA_ROOT, str(datetime.utcnow) + "_" + request.user.username, filename])
+#     with open(path, 'wb+') as destination:
+#         for chunk in f.chunks():
+#             destination.write(chunk)
 
 
 def register(request):

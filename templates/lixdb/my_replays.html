@@ -1,0 +1,28 @@
+{% extends 'lixdb/base.html' %}
+
+
+{% block title %} - {{ user.name }}'s replays{% endblock %}
+
+{% block body_block %}
+    <h1>{{ user.username }}'s replays</h1>
+
+    <table>
+        <tr>
+            <th>Timestamp</th>
+            <th>Level</th>
+            <th>Time</th>
+            <th>Saved</th>
+            <th>Skills</th>
+        </tr>
+        {% for rpl in replays %}
+        <tr class="{{ rpl.status }}">
+            <td>{{ rpl.timestamp.isoformat }}</td>
+            <td>{{ rpl.level_path }} {{ rpl.level.title }}</td>
+            <td>{{ rpl.time }}</td>
+            <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
+            <td>{{ rpl.skills }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

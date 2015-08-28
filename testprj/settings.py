@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+SITE_ID = 1
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SETTINGS_DIR = os.path.dirname(__file__)
@@ -89,12 +91,9 @@ DATABASES = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+USE_I18N = False
+USE_L10N = False
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

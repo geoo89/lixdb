@@ -38,6 +38,46 @@ tr.lev td {
     background-color: #EEEEEE;
 }
 
+tr.OK td {
+    background-color: #BBFFBB;
+}
+
+tr.FAIL td {
+    background-color: #FFBBBB;
+}
+
+tr.NO-LEV td {
+    background-color: #000000;
+    color: #FFEEEE;
+}
+
+
+
+td#gold {
+    background-color: #FFD700;
+    color: #000000;
+}
+
+td#silver {
+    background-color: #BCC6CC;
+    color: #000000;
+}
+
+td#bronze {
+    background-color: #CD7F32;
+    color: #000000;
+}
+
+td#fail {
+    background-color: #FFBBBB;
+}
+
+td#nolev {
+    background-color: #000000;
+    color: #FFEEEE;
+}
+
+
 
 a {
     color: blue;

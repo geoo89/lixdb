@@ -1,6 +1,8 @@
 import os
 import fnmatch
 import csv
+from datetime import datetime
+import django
 
 def populate():
     lev_root = Directory.objects.get_or_create(name='levels', oid = 0)[0]
@@ -41,13 +43,24 @@ def populate():
             Level.objects.get_or_create(name = os.path.join(root, filename), parent = par, title = title, oid = f_oid)
     os.chdir("..")
 
+    now = datetime.utcnow()
+    user = django.contrib.auth.models.User.objects.get(username = 'geoo')
+    user2 = django.contrib.auth.models.User.objects.get(username = 'Nepster2')
     #try:
     with open('replay_list.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
             if len(row) == 8:
-                if row[0] == '(OK)' or row[0] == '(FAIL)':
-                    Replay.objects.get_or_create(status = row[0], name = row[1], level_path = row[2], author = row[3], lems_saved = int(row[4]), lems_required = int(row[5]), skills = int(row[6]), time = int(row[7]))
+                #try:
+                #    lv = Level.objects.get(name = row[2])
+                    if row[0] == '(OK)' or row[0] == '(FAIL)':
+                        if row[3] == 'geoo':
+                            Replay.objects.get_or_create(status = row[0][1:-1], name = row[1], level_path = row[2], author = row[3], lems_saved = int(row[4]), lems_required = int(row[5]), skills = int(row[6]), time = int(row[7]), timestamp = now, owner = user)
+                        else:
+                            Replay.objects.get_or_create(status = row[0][1:-1], name = row[1], level_path = row[2], author = row[3], lems_saved = int(row[4]), lems_required = int(row[5]), skills = int(row[6]), time = int(row[7]), timestamp = now, owner = user2)
+                #except lixdb.models.DoesNotExist:
+                #    Replay.objects.get_or_create(status = 'NO-LEV', name = row[1], level_path = row[2], author = row[3], lems_saved = int(row[4]), lems_required = int(row[5]), skills = int(row[6]), time = int(row[7]), timestamp = now, owner = user)
+
     #except Exception as err: # I'm being very lazy here...
     #    print('File \'' + 'replay_list.csv' + '\' not found or something.')
 

@@ -17,7 +17,7 @@
             </tr>
             {% for rpl in replays_by_saved %}
             <tr>
-                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.author }} ({{ rpl.owner.username }})</td>
                 <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
                 <td>{{ rpl.skills }}</td>
                 <td>{{ rpl.time }}</td>
@@ -34,7 +34,7 @@
             </tr>
             {% for rpl in replays_by_skills %}
             <tr>
-                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.author }} ({{ rpl.owner.username }})</td>
                 <td>{{ rpl.skills }}</td>
                 <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
                 <td>{{ rpl.time }}</td>
@@ -51,7 +51,7 @@
             </tr>
             {% for rpl in replays_by_time %}
             <tr>
-                <td>{{ rpl.author }}</td>
+                <td>{{ rpl.author }} ({{ rpl.owner.username }})</td>
                 <td>{{ rpl.time }}</td>
                 <td>{{ rpl.lems_saved }}/{{ rpl.lems_required }}</td>
                 <td>{{ rpl.skills }}</td>
